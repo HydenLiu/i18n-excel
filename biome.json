@@ -10,6 +10,9 @@
 			"suspicious": {
 				"noExplicitAny": "warn",
 				"noUnknownAtRules": "off"
+			},
+			"correctness": {
+				"useUniqueElementIds": "off"
 			}
 		}
 	},

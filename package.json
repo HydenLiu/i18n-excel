@@ -12,12 +12,16 @@
 		"check": "biome check --apply ."
 	},
 	"dependencies": {
+		"@radix-ui/react-dialog": "^1.1.15",
+		"@radix-ui/react-label": "^2.1.7",
+		"@radix-ui/react-popover": "^1.1.15",
 		"@radix-ui/react-slot": "^1.2.3",
+		"cmdk": "^1.1.1",
 		"file-saver": "^2.0.5",
 		"jszip": "^3.10.1",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
-		"read-excel-file": "^6.0.1"
+		"xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.4",

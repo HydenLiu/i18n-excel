@@ -1,7 +1,8 @@
 import { saveAs } from 'file-saver'
 import JsZip from 'jszip'
 
-export type LangMap = Record<string, any>
+export type LangMap = Record<string, Record<string, string>>
+export type SheetData = Record<string, string>
 
 /**
  * 导出多个文件到zip压缩包
@@ -17,7 +18,7 @@ export async function downloadFilesToZip(params: LangMap) {
 	})
 }
 
-export function downLoadJSON(data: LangMap, zip: JsZip, fileName: string) {
+export function downLoadJSON(data: SheetData, zip: JsZip, fileName: string) {
 	const jsr = JSON.stringify(data, null, 2)
 	const blob = new Blob([jsr], { type: 'application/json' })
 	zip.file(`${fileName}.json`, blob)
