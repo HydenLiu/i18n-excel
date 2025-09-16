@@ -7,7 +7,7 @@ export default defineConfig({
 		port: 8888,
 	},
 	output: {
-		assetPrefix: './',
+		// assetPrefix: './',
 		polyfill: 'usage',
 	},
 	performance: {
