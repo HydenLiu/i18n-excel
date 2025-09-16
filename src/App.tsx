@@ -10,6 +10,7 @@ import {
 	type SheetData,
 } from './lib/download'
 import './App.css'
+import View from './components/View'
 
 const App = () => {
 	const [workbook, setWorkbook] = useState<WorkBook | null>(null)
@@ -38,22 +39,26 @@ const App = () => {
 			const row = sheetData[i]
 			let rowKey = row.key || row['英'] || row['英语'] || row.en || `${i + 1}`
 			// rowKey去掉空格/中文/中划线/冒号/斜杠/引号/括号/等特殊字符
-			rowKey = rowKey
-				?.split(' ')
-				?.slice(0, 5)
-				?.join('_')
-				?.replace(/[\u4e00-\u9fa5,;，。、.!《》]/g, '')
-				?.replace(/[-:/()[\]【】{}"']/g, '_')
-				?.toLocaleLowerCase()
+			// 处理 rowKey：移除中文字符和特殊符号，限制长度，转换为小写
+			rowKey = (rowKey || '')
+				.split(' ')
+				.slice(0, 5)
+				.join('_')
+				.replace(/[\u4e00-\u9fa5,;，。、.!《》:/()[\]【】{}"'-]/g, '_')
+				.toLocaleLowerCase()
+				.replace(/_+/g, '_') // 移除连续的下划线
+				.replace(/^_|_$/g, '') // 移除首尾的下划线
 			if (keys.includes(rowKey)) {
 				rowKey = `${rowKey}_${i + 1}`
 			}
 			keys.push(rowKey)
 			for (const key in row) {
+				if (key === 'key') continue
 				langMap[key] = langMap[key] || {}
 				langMap[key][rowKey] = row[key]
 			}
 		}
+
 		setLangMapData(langMap)
 	}
 
@@ -61,7 +66,7 @@ const App = () => {
 
 	return (
 		<div className="py-10 px-4">
-			<div className="max-w-sm mx-auto">
+			<div className="max-w-md mx-auto">
 				<div className="mb-4 flex items-end gap-2">
 					<InputFile onChange={handleFileChange} />
 					<Button
@@ -81,6 +86,7 @@ const App = () => {
 					/>
 				)}
 			</div>
+			{!btnDisabled && <View langMap={langMapData} />}
 		</div>
 	)
 }
