@@ -6,4 +6,11 @@ export default defineConfig({
 	server: {
 		port: 8888,
 	},
+	output: {
+		assetPrefix: './',
+		polyfill: 'usage',
+	},
+	performance: {
+		removeConsole: import.meta.env.PROD,
+	},
 })
