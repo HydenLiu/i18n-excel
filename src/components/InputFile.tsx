@@ -17,11 +17,6 @@ export function InputFile({
 				type="file"
 				accept=".xlsx,.xls"
 				onChange={(e) => {
-					console.log(
-						'%c🤪 ~ file: /Users/hyden/code/hyden_code/i18n-excel/src/components/InputFile.tsx:17 : ',
-						'color: #8fe9c0',
-						e.target.files,
-					)
 					onChange(e.target.files?.[0] ?? null)
 				}}
 			/>

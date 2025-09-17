@@ -44,7 +44,7 @@ const App = () => {
 				.split(' ')
 				.slice(0, 5)
 				.join('_')
-				.replace(/[\u4e00-\u9fa5,;，。、.!《》:/()[\]【】{}"'-]/g, '_')
+				.replace(/[\u4e00-\u9fa5,;，。、.!《》:/()[\]【】{}@#$%^&*"'-]/g, '_')
 				.toLocaleLowerCase()
 				.replace(/_+/g, '_') // 移除连续的下划线
 				.replace(/^_|_$/g, '') // 移除首尾的下划线
