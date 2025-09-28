@@ -10,6 +10,7 @@ import {
 	type SheetData,
 } from './lib/download'
 import './App.css'
+import { Toaster } from 'sonner'
 import View from './components/View'
 
 const App = () => {
@@ -87,6 +88,8 @@ const App = () => {
 				)}
 			</div>
 			{!btnDisabled && <View langMap={langMapData} />}
+
+			<Toaster />
 		</div>
 	)
 }
