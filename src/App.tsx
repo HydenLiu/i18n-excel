@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import XLSX, { type WorkBook } from 'xlsx'
 import { InputFile } from '@/components/InputFile'
 import { SelectSheetNames } from './components/SelectSheetNames'
@@ -10,8 +10,8 @@ import {
 	type SheetData,
 } from './lib/download'
 import './App.css'
-import { Toaster } from 'sonner'
-import View from './components/View'
+import { Toaster, toast } from 'sonner'
+import View, { type ViewRef } from './components/View'
 
 const App = () => {
 	const [workbook, setWorkbook] = useState<WorkBook | null>(null)
@@ -19,6 +19,7 @@ const App = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [langMapData, setLangMapData] = useState<LangMap>({})
 	const { SheetNames, Sheets = {} } = workbook || {}
+	const viewRef = useRef<ViewRef>(null)
 
 	async function handleFileChange(file: File | null) {
 		if (!file) return
@@ -65,15 +66,25 @@ const App = () => {
 
 	const btnDisabled = Object.keys(langMapData).length === 0
 
+	const handleDownload = () => {
+		const selectKeys = viewRef.current?.selectKeys || []
+		if (selectKeys.length === 0) {
+			toast.error('Please select at least one language')
+			return
+		}
+		const langMap = selectKeys.reduce((acc: LangMap, key: string) => {
+			acc[key] = langMapData[key]
+			return acc
+		}, {})
+		downloadFilesToZip(langMap)
+	}
+
 	return (
 		<div className="py-10 px-4">
 			<div className="max-w-md mx-auto">
 				<div className="mb-4 flex items-end gap-2">
 					<InputFile onChange={handleFileChange} />
-					<Button
-						onClick={() => downloadFilesToZip(langMapData)}
-						disabled={btnDisabled}
-					>
+					<Button onClick={handleDownload} disabled={btnDisabled}>
 						Download
 					</Button>
 				</div>
@@ -87,7 +98,7 @@ const App = () => {
 					/>
 				)}
 			</div>
-			{!btnDisabled && <View langMap={langMapData} />}
+			{!btnDisabled && <View ref={viewRef} langMap={langMapData} />}
 
 			<Toaster />
 		</div>
