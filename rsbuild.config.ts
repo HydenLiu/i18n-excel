@@ -13,4 +13,7 @@ export default defineConfig({
 	performance: {
 		removeConsole: import.meta.env.PROD,
 	},
+	html: {
+		title: 'Excel to i18n',
+	},
 })
