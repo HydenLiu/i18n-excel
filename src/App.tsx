@@ -39,24 +39,22 @@ const App = () => {
 		const keys: string[] = []
 		for (let i = 0; i < sheetData.length; i++) {
 			const row = sheetData[i]
-			let rowKey =
-				row.key ||
-				row.Key ||
-				row.KEY ||
-				row['英'] ||
-				row['英语'] ||
-				row.en ||
-				`${i + 1}`
-			// rowKey去掉空格/中文/中划线/冒号/斜杠/引号/括号/等特殊字符
-			// 处理 rowKey：移除中文字符和特殊符号，限制长度，转换为小写
-			rowKey = (rowKey || '')
-				.split(' ')
-				.slice(0, 5)
-				.join('_')
-				.replace(/[\u4e00-\u9fa5,;，。、.!《》:/()[\]【】{}@#$%^&*"'-]/g, '_')
-				.toLocaleLowerCase()
-				.replace(/_+/g, '_') // 移除连续的下划线
-				.replace(/^_|_$/g, '') // 移除首尾的下划线
+			let rowKey = ''
+			if (row.key || row.Key || row.KEY) {
+				rowKey = row.key || row.Key || row.KEY
+			} else {
+				rowKey = row['英'] || row['英语'] || row.en || `${i + 1}`
+
+				rowKey = (rowKey || '')
+					.split(' ')
+					.slice(0, 5)
+					.join('_')
+					.replace(/[\u4e00-\u9fa5,;，。、.!《》:/()[\]【】{}@#$%^&*"'-]/g, '_')
+					.toLocaleLowerCase()
+					.replace(/_+/g, '_') // 移除连续的下划线
+					.replace(/^_|_$/g, '') // 移除首尾的下划线
+			}
+
 			if (keys.includes(rowKey)) {
 				rowKey = `${rowKey}_${i + 1}`
 			}
