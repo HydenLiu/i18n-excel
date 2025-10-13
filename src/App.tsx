@@ -37,6 +37,7 @@ const App = () => {
 
 		const langMap: LangMap = {}
 		const keys: string[] = []
+		const rowKeys: string[] = []
 		for (let i = 0; i < sheetData.length; i++) {
 			const row = sheetData[i]
 			let rowKey = ''
@@ -55,14 +56,24 @@ const App = () => {
 					.replace(/^_|_$/g, '') // 移除首尾的下划线
 			}
 
-			if (keys.includes(rowKey)) {
+			if (rowKeys.includes(rowKey)) {
 				rowKey = `${rowKey}_${i + 1}`
 			}
-			keys.push(rowKey)
+			rowKeys.push(rowKey)
 			for (const key in row) {
 				if (key?.toLowerCase() === 'key') continue
+				if (!keys.includes(key)) keys.push(key)
 				langMap[key] = langMap[key] || {}
-				langMap[key][rowKey] = row[key]
+				langMap[key][rowKey] = row[key] || ''
+			}
+		}
+
+		// 确保每个语言都有所有的 rowKeys，缺失的值默认为空字符串
+		for (const langKey of keys) {
+			for (const rowKey of rowKeys) {
+				if (langMap[langKey][rowKey] === undefined) {
+					langMap[langKey][rowKey] = ''
+				}
 			}
 		}
 
