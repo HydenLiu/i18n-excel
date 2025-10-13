@@ -39,7 +39,14 @@ const App = () => {
 		const keys: string[] = []
 		for (let i = 0; i < sheetData.length; i++) {
 			const row = sheetData[i]
-			let rowKey = row.key || row['英'] || row['英语'] || row.en || `${i + 1}`
+			let rowKey =
+				row.key ||
+				row.Key ||
+				row.KEY ||
+				row['英'] ||
+				row['英语'] ||
+				row.en ||
+				`${i + 1}`
 			// rowKey去掉空格/中文/中划线/冒号/斜杠/引号/括号/等特殊字符
 			// 处理 rowKey：移除中文字符和特殊符号，限制长度，转换为小写
 			rowKey = (rowKey || '')
@@ -55,7 +62,7 @@ const App = () => {
 			}
 			keys.push(rowKey)
 			for (const key in row) {
-				if (key === 'key') continue
+				if (key?.toLowerCase() === 'key') continue
 				langMap[key] = langMap[key] || {}
 				langMap[key][rowKey] = row[key]
 			}
